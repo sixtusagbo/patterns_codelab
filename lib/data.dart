@@ -1,5 +1,27 @@
 import 'dart:convert';
 
+const documentJson = '''{
+  "metadata": {
+    "title": "My Document",
+    "modified": "2023-07-12"
+  },
+  "blocks": [
+    {
+      "type": "h1",
+      "text": "Chapter 1"
+    },
+    {
+      "type": "p",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    },
+    {
+      "type": "checkbox",
+      "checked": true,
+      "text": "Learn Dart 3"
+    }
+  ]
+}''';
+
 class Document {
   final Map<String, Object?> _json;
   Document() : _json = jsonDecode(documentJson);
@@ -27,39 +49,35 @@ class Document {
   }
 }
 
-class Block {
-  final String type;
-  final String text;
+sealed class Block {
+  Block();
 
-  Block(this.type, this.text);
-
-  factory Block.fromJson(Map<String, dynamic> json) {
-    if (json case {'type': final type, 'text': final text}) {
-      return Block(type, text);
-    } else {
-      throw const FormatException('Unexpected JSON format');
-    }
+  factory Block.fromJson(Map<String, Object?> json) {
+    return switch (json) {
+      {'type': 'h1', 'text': String text} => HeaderBlock(text),
+      {'type': 'p', 'text': String text} => ParagraphBlock(text),
+      {'type': 'checkbox', 'text': String text, 'checked': bool isChecked} =>
+        CheckboxBlock(text, isChecked),
+      _ => throw const FormatException('Unexpected JSON format'),
+    };
   }
 }
 
-const documentJson = '''{
-  "metadata": {
-    "title": "My Document",
-    "modified": "2023-07-12"
-  },
-  "blocks": [
-    {
-      "type": "h1",
-      "text": "Chapter 1"
-    },
-    {
-      "type": "p",
-      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    },
-    {
-      "type": "checkbox",
-      "checked": false,
-      "text": "Learn Dart 3"
-    }
-  ]
-}''';
+class HeaderBlock extends Block {
+  final String text;
+
+  HeaderBlock(this.text);
+}
+
+class ParagraphBlock extends Block {
+  final String text;
+
+  ParagraphBlock(this.text);
+}
+
+class CheckboxBlock extends Block {
+  final String text;
+  final bool isChecked;
+
+  CheckboxBlock(this.text, this.isChecked);
+}
