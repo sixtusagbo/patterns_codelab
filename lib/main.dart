@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:patterns_codelab/data.dart';
+import 'package:patterns_codelab/screens/document_screen.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+void main() => runApp(const MainApp());
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -16,35 +15,6 @@ class MainApp extends StatelessWidget {
       ),
       theme: ThemeData(useMaterial3: true),
       debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class DocumentScreen extends StatelessWidget {
-  final Document document;
-
-  const DocumentScreen({
-    super.key,
-    required this.document,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final (title, :modified) = document.metadata;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Column(
-        children: [
-          Center(
-            child: Text(
-              'Last modified $modified',
-            ),
-          )
-        ],
-      ),
     );
   }
 }
