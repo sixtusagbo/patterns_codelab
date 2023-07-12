@@ -1,3 +1,3 @@
 # patterns_codelab
 
-A new Flutter project.
+Dart's patterns and records.
