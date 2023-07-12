@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patterns_codelab/data.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,13 +11,40 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+      home: DocumentScreen(
+        document: Document(),
       ),
       theme: ThemeData(useMaterial3: true),
       debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class DocumentScreen extends StatelessWidget {
+  final Document document;
+
+  const DocumentScreen({
+    super.key,
+    required this.document,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final metadataRecord = document.metadata;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(metadataRecord.$1),
+      ),
+      body: Column(
+        children: [
+          Center(
+            child: Text(
+              'Last modified ${metadataRecord.modified}',
+            ),
+          )
+        ],
+      ),
     );
   }
 }
